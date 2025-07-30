@@ -22,7 +22,7 @@ async function setAdminClaims() {
       await admin.auth().setCustomUserClaims(uid, { admin: true });
       console.log(`✅ Set admin for UID: ${uid}`);
     } catch (err) {
-      console.error(`❌ Failed for UID ${uid}:`, err);
+       alert(" Failed for UID ${uid}:`, err");
     }
   }
 }
