@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+   
+  
+    // Rule to allow only users with role = "admin"
+    function isAdmin() {
+      return request.auth != null &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
+  
+    match /users/{userId} {
+      allow read, write: if request.auth != null && (
+        request.auth.uid == userId || request.auth.token.admin == true
+      ); 
+    }
+    
+    
+     match /blogs/{blogId} {
+      // Allow everyone to read
+      allow read: if true;
+
+      // Allow only authenticated users to write
+    //  allow write: if request.auth != null;
+    allow write: if isAdmin();
+    }
+    
+    match /categories/{id} {
+      // Allow everyone to read
+      allow read: if true;
+
+      // Allow only authenticated users to write
+    //  allow write: if request.auth != null;+
+    
+       allow write: if  isAdmin();
+       allow update: if  isAdmin();
+       allow delete : if 1==1;
+    }
+    
+    //category_counters
+      match /category_counters/{id} {
+      // Allow everyone to read
+      allow read: if true;
+
+      // Allow only authenticated users to write
+    //  allow write: if request.auth != null;
+    allow write: if isAdmin();
+    }
+    
+  }
+}
+
+

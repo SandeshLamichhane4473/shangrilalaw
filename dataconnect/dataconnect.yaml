@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "shangrilalaw"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "shangrilalaw-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

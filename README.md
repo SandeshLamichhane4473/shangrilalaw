@@ -1,2 +1,0 @@
-# shangrilalaw
-shangrilalaw
