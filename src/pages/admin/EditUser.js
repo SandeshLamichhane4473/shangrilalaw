@@ -22,7 +22,7 @@ const EditUser = () => {
   const [loading, setLoading] = useState(true);
  
   const { user} = useAuth();
-  const canUpdate = user?.authorization?.includes("U");
+  
   // Simulated user fetch function (replace with real API call)
   const fetchUserById = async (id) => {
     // Simulated data, ideally you'd fetch from an API using `id`
@@ -69,13 +69,24 @@ const EditUser = () => {
      if (!/^[UABN]*$/.test(editUser.authorization)) {
       alert("Authorization field can only contain the letters U, A, N,B.");
       return; 
+      
       }
        
      if(user.uid===editUser.uid){alert("Own id cannot be updated"); return;}
-     if (!canUpdate) {
-     alert("❌ You are not authorized to perform this action.");
-     return;
+   if(editUser.authorization.trim()==="" || editUser.authorization.trim()===undefined){
+    alert("Empty authorization")
+    return;
+   }
+     
+   
+   const rights = user.authorization || '';
+
+      if (/[U]/.test(rights)) { 
+      } else {
+         alert("❌ You are not authorized to perform this action.");
+        return;
       }
+ 
      setLoading(true)
      const userRef = doc(db, "users", editUser.uid);
      await setDoc(userRef, editUser, { merge: true });
